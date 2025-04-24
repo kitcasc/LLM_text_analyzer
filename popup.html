@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LLM Text Analyzer</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .container {
+      padding: 15px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    #result {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #resultContent {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.5;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="result" class="result-container">
+      <div id="resultContent"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 
