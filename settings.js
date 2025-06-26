@@ -50,6 +50,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!modelSelect.value.includes('gemini')) {
         modelSelect.value = 'gemini-1.5-pro';
       }
+      // 若已存在 2.5 flash，預設選擇 2.5 flash
+      const hasGemini25 = Array.from(modelSelect.options).some(opt => opt.value === 'gemini-2.5-flash');
+      if (hasGemini25) {
+        modelSelect.value = 'gemini-2.5-flash';
+      }
     }
   });
 

@@ -35,7 +35,14 @@ async function analyzeText(selectedText) {
 
     try {
       if (modelType === 'gemini') {
-        const modelName = data.model === 'gemini-1.5-pro' ? 'gemini-1.5-pro' : 'gemini-1.5-flash';
+        let modelName;
+        if (data.model === 'gemini-1.5-pro') {
+          modelName = 'gemini-1.5-pro';
+        } else if (data.model === 'gemini-2.5-flash') {
+          modelName = 'gemini-2.5-flash';
+        } else {
+          modelName = 'gemini-1.5-flash';
+        }
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: {
