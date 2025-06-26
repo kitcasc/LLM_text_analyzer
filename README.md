@@ -1,6 +1,6 @@
 # LLM Text Analyzer Chrome Extension
 
-A powerful Chrome extension that allows you to analyze selected text on any website using custom prompts and your preferred LLM API.
+A simple Chrome extension that allows you to analyze selected text on any website using custom prompts and your preferred LLM API (Gemini and Grok supported sor far).
 
 ## Features
 
@@ -72,6 +72,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 This extension requires your own API keys for LLM services. The developers are not responsible for any API usage costs or charges incurred while using this extension.
 
-## Support
+## Prompt I use for preparing exams
 
-If you encounter any issues or have questions, please open an issue in the GitHub repository. 
+The text selected on the webpage is a question. Analyze the question with the steps:
+1. First point out the correct answer.
+2. Provide a detailed explanation of the question, including why each option is correct or incorrect.
+
