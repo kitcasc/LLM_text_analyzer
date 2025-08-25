@@ -6,14 +6,34 @@ document.addEventListener('DOMContentLoaded', function() {
       // Clear the stored text after using it
       chrome.storage.local.remove(['selectedText']);
     } else {
-      document.getElementById('resultContent').textContent = 'No text selected. Please select some text and try again.';
+      document.getElementById('resultContent').innerHTML = basicMarkdownParser('No text selected. Please select some text and try again.');
     }
   });
 });
 
+function basicMarkdownParser(text) {
+  // Headings
+  text = text.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
+  text = text.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+  text = text.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+  text = text.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+  // Bold
+  text = text.replace(/\*\*(.*)\*\*/gim, '<b>$1</b>');
+
+  // Italics
+  text = text.replace(/\*(.*)\*/gim, '<i>$1</i>');
+
+  // Unordered lists
+  text = text.replace(/^\- (.*$)/gim, '<ul><li>$1</li></ul>');
+  text = text.replace(/<\/ul><ul>/gim, '');
+
+  return text.trim();
+}
+
 async function analyzeText(selectedText) {
   const resultContent = document.getElementById('resultContent');
-  resultContent.textContent = 'Analyzing...';
+  resultContent.innerHTML = basicMarkdownParser('Analyzing...');
 
   chrome.storage.sync.get(['grokApiKey', 'geminiApiKey', 'model', 'prompt'], async function(data) {
     let apiKey;
@@ -29,7 +49,7 @@ async function analyzeText(selectedText) {
     }
 
     if (!apiKey) {
-      resultContent.textContent = `Please set your ${modelType === 'grok' ? 'Grok' : 'Gemini'} API key first!`;
+      resultContent.innerHTML = basicMarkdownParser(`Please set your ${modelType === 'grok' ? 'Grok' : 'Gemini'} API key first!`);
       return;
     }
 
@@ -57,8 +77,7 @@ async function analyzeText(selectedText) {
             generationConfig: {
               temperature: 0.7,
               topK: 40,
-              topP: 0.95,
-              maxOutputTokens: 2048,
+              topP: 0.95
             }
           })
         });
@@ -72,14 +91,14 @@ async function analyzeText(selectedText) {
         console.log('API Response:', result); // For debugging
 
         if (result.candidates && result.candidates[0] && result.candidates[0].content) {
-          resultContent.textContent = result.candidates[0].content.parts[0].text;
+          resultContent.innerHTML = basicMarkdownParser(result.candidates[0].content.parts[0].text);
         } else {
-          resultContent.textContent = 'Error: Invalid response format from Gemini API';
+          resultContent.innerHTML = basicMarkdownParser('Error: Invalid response format from Gemini API');
         }
       } else if (modelType === 'grok') {
         // Show "Thinking" indicator for mini models
         if (data.model.includes('mini')) {
-          resultContent.textContent = 'Thinking...';
+          resultContent.innerHTML = basicMarkdownParser('Thinking...');
         }
 
         const response = await fetch('https://api.x.ai/v1/chat/completions', {
@@ -96,8 +115,7 @@ async function analyzeText(selectedText) {
                 content: `${data.prompt}\n\n${selectedText}`
               }
             ],
-            temperature: 0.7,
-            max_tokens: 2048
+            temperature: 0.7
           })
         });
 
@@ -110,14 +128,14 @@ async function analyzeText(selectedText) {
         console.log('API Response:', result); // For debugging
 
         if (result.choices && result.choices[0] && result.choices[0].message) {
-          resultContent.textContent = result.choices[0].message.content;
+          resultContent.innerHTML = basicMarkdownParser(result.choices[0].message.content);
         } else {
-          resultContent.textContent = 'Error: Invalid response format from Grok API';
+          resultContent.innerHTML = basicMarkdownParser('Error: Invalid response format from Grok API');
         }
       }
     } catch (error) {
       console.error('Error:', error);
-      resultContent.textContent = `Error: ${error.message}`;
+      resultContent.innerHTML = basicMarkdownParser(`Error: ${error.message}`);
     }
   });
 } 

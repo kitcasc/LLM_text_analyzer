@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LLM Text Analyzer",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Analyze selected text using LLM with custom prompts",
   "permissions": [
     "storage",
