@@ -14,7 +14,7 @@ A simple Chrome extension that allows you to analyze selected text on any websit
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/llm-text-analyzer-chrome-extension.git
+git clone https://github.com/kitcasc/LLM_text_analyzer
 ```
 
 2. Open Chrome and navigate to `chrome://extensions/`
